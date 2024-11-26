@@ -47,7 +47,7 @@ function SearchResult({ trip }: any) {
                         );
                     })}
             </Stack>
-            <Typography>Price:{trip.price.formatted}</Typography>
+            <Typography>Price: {trip.price.formatted}</Typography>
         </SearchResultWrapper>
     );
 }
