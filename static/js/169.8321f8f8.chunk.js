@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkroman_flights=self.webpackChunkroman_flights||[]).push([[169],{1169:(r,e,n)=>{n.r(e),n.d(e,{default:()=>t});n(5043);var s=n(579);const t=function(){return(0,s.jsx)("div",{children:"ErrorScreen"})}}}]);
+//# sourceMappingURL=169.8321f8f8.chunk.js.map
