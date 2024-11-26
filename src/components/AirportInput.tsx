@@ -103,9 +103,12 @@ function AirPortInput({ direction }: AirportInputProps) {
             {showResults && data?.data && data?.data?.length > 0 && (
                 <AirportResultsWrapper spacing={1}>
                     {data.data.map(
-                        (airportSearchResult: AirPortSearchResultType) => (
+                        (
+                            airportSearchResult: AirPortSearchResultType,
+                            idx: number,
+                        ) => (
                             <AirportResult
-                                key={airportSearchResult.id}
+                                key={idx}
                                 res={airportSearchResult}
                                 setSelectedLocation={setSelectedLocation}
                             />

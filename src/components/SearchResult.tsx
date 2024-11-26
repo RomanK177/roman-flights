@@ -16,13 +16,14 @@ function SearchResult({ trip }: any) {
         >
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
                 {trip.legs.length &&
-                    trip.legs.map((leg: any) => {
+                    trip.legs.map((leg: any, idx: number) => {
                         return (
                             <Stack
                                 className="leg"
                                 direction="row"
                                 alignItems="center"
                                 spacing={2}
+                                key={idx}
                             >
                                 <Box
                                     component="img"
