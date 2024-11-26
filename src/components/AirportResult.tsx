@@ -7,7 +7,7 @@ import AirplanemodeActiveOutlinedIcon from '@mui/icons-material/AirplanemodeActi
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
 
 // Types
-import { AirPortSearchResultType } from '../types/searchFlightTypes';
+import { AirPortSearchResultType } from '../types/search.flight.types';
 
 interface AirportResultProps {
     res: AirPortSearchResultType;
@@ -19,22 +19,27 @@ interface AirportResultProps {
 function AirportResult({ res, setSelectedLocation }: AirportResultProps) {
     // console.log('🚀 ~ AirportResult ~ res:', res);
     return (
-        <Stack
-            direction="row"
-            alignItems="center"
-            onClick={() => setSelectedLocation(res)}
-            sx={{ cursor: 'pointer' }}
-        >
-            {res.navigation.entityType === 'AIRPORT' ? (
-                <AirplanemodeActiveOutlinedIcon />
-            ) : (
-                <FmdGoodOutlinedIcon />
+        <>
+            {res.navigation.entityType === 'AIRPORT' && (
+                <Stack
+                    spacing={1}
+                    p={1}
+                    direction="row"
+                    alignItems="center"
+                    onClick={() => setSelectedLocation(res)}
+                    sx={{ cursor: 'pointer' }}
+                >
+                    <AirplanemodeActiveOutlinedIcon />
+
+                    <Stack alignItems="start">
+                        <Typography>
+                            {res.presentation.suggestionTitle}
+                        </Typography>
+                        <Typography>{res.presentation.subtitle}</Typography>
+                    </Stack>
+                </Stack>
             )}
-            <Stack alignItems="start">
-                <Typography>{res.presentation.suggestionTitle}</Typography>
-                <Typography>{res.presentation.subtitle}</Typography>
-            </Stack>
-        </Stack>
+        </>
     );
 }
 

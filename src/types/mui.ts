@@ -8,8 +8,9 @@ declare module '@mui/material/Button' {
         containedGray: true;
         outlineLight: true;
         transparentBlue: true;
-        containedYellow: true;
-        containedLighterBlue: true;
+        containedLightBlue: true;
+        containedBlue: true;
+        myDisabled: true;
     }
 }
 

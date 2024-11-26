@@ -1,25 +1,48 @@
 import axios from 'axios';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 
 // Types
-import { AirPortSearchResultType } from '../types/searchFlightTypes';
+import { AirPortSearchResultType } from '../types/search.flight.types';
+import { SearchParams } from '../types/search.context';
 
+// API Configuration
 const rapidKey = '71616017f8msh278dc76385f39d0p1fa0b2jsn99b054693411';
 const rapidHost = 'sky-scrapper.p.rapidapi.com';
 
-export const useGetFlights = (id?: string) => {
-    const QUERY_KEY = ['getFlights', id];
+// Helper function for API requests
+const axiosRequest = async (options: any) => {
+    try {
+        const response = await axios.request(options);
+        return response.data;
+    } catch (error: any) {
+        console.error('API Error:', error.response || error.message);
+        throw error;
+    }
+};
 
-    const { data, isLoading, isError, error, refetch } = useQuery({
-        queryKey: QUERY_KEY,
-        queryFn: async () => {
+// Hook for Searching Flights
+export const useSearchFlights = () => {
+    const {
+        mutateAsync: handleSearchFlights,
+        isLoading,
+        isError,
+        data,
+        error,
+    } = useMutation({
+        mutationFn: async (searchParams: SearchParams) => {
             const options = {
                 method: 'GET',
-                url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/getPriceCalendar',
+                url: 'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights',
                 params: {
-                    originSkyId: 'BOM',
-                    destinationSkyId: 'JFK',
-                    fromDate: '2024-02-20',
+                    originSkyId: searchParams.from?.skyId,
+                    destinationSkyId: searchParams.to?.skyId,
+                    originEntityId: searchParams.from?.entityId,
+                    destinationEntityId: searchParams.to?.entityId,
+                    cabinClass: searchParams.filters.class || 'economy',
+                    adults: searchParams.filters.adults || 1,
+                    date: searchParams.dates.start,
+                    returnDate: searchParams.dates.end,
+                    sortBy: 'best',
                     currency: 'USD',
                 },
                 headers: {
@@ -27,30 +50,36 @@ export const useGetFlights = (id?: string) => {
                     'x-rapidapi-host': rapidHost,
                 },
             };
-
-            try {
-                const response = await axios.request(options);
-                console.log(response.data);
-            } catch (error) {
-                console.error(error);
-            }
+            return axiosRequest(options);
+        },
+        onSuccess: (data) => {
+            console.log('Flights search successful:', data);
+            // Add additional success logic here if needed
+        },
+        onError: (error: any) => {
+            console.error('Error during flight search:', error);
+            // Optional: Dispatch custom error events or handle errors more gracefully
         },
     });
 
-    return { data, isLoading, isError, error, refetch };
+    return { handleSearchFlights, isLoading, isError, data, error };
 };
 
-export const useSearchAirport = (str?: string) => {
-    const QUERY_KEY = ['searchAirport', str];
-
-    const { data, isLoading, isError, error, refetch } = useQuery({
-        queryKey: QUERY_KEY,
-        queryFn: async () => {
+// Hook for Searching Airports
+export const useSearchAirport = () => {
+    const {
+        mutateAsync: handleSearchAirport,
+        isLoading,
+        isError,
+        data,
+        error,
+    } = useMutation({
+        mutationFn: async (query: string) => {
             const options = {
                 method: 'GET',
                 url: 'https://sky-scrapper.p.rapidapi.com/api/v1/flights/searchAirport',
                 params: {
-                    query: str,
+                    query,
                     locale: 'en-US',
                 },
                 headers: {
@@ -58,17 +87,17 @@ export const useSearchAirport = (str?: string) => {
                     'x-rapidapi-host': rapidHost,
                 },
             };
-
-            try {
-                const response = await axios.request(options);
-                console.log(response.data);
-                return response.data;
-            } catch (error) {
-                console.error(error);
-            }
+            return axiosRequest(options);
         },
-        enabled: !!str, // Only fetch when search is not empty
+        onSuccess: (data) => {
+            console.log('Airport search successful:', data);
+            // Add additional success logic here if needed
+        },
+        onError: (error: any) => {
+            console.error('Error during airport search:', error);
+            // Optional: Dispatch custom error events or handle errors more gracefully
+        },
     });
 
-    return { data, isLoading, isError, error, refetch };
+    return { handleSearchAirport, isLoading, isError, data, error };
 };

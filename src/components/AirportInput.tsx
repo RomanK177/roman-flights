@@ -1,17 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { StyledSimpleInput } from '../styles/inputs';
+import { useState, useEffect } from 'react';
+import { StyledSimpleInput } from '../styles/Inputs';
 import { useSearchAirport } from '../services/FlightsService';
 
 // Mui
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
-import { Box, Stack, InputAdornment } from '@mui/material/';
+import { Box, InputAdornment } from '@mui/material/';
 
 // parts
 import AirportResult from './AirportResult';
 
+// Styled
+import {
+    AirportResultsWrapper,
+    InputLoader,
+} from '../styles/SearchBarStyledComponents';
+
 // Types
-import { AirPortSearchResultType } from '../types/searchFlightTypes';
+import {
+    AirPortSearchResultType,
+    AirportInputProps,
+} from '../types/search.flight.types';
+
+// Context
+import { useSearchContext } from '../contexts/SearchContext';
 
 // Helper for debouncing
 const debounce = (func: (...args: any[]) => void, delay: number) => {
@@ -21,32 +33,39 @@ const debounce = (func: (...args: any[]) => void, delay: number) => {
         timer = setTimeout(() => func(...args), delay);
     };
 };
-interface AirportInputProps {
-    direction: string;
-}
 
 function AirPortInput({ direction }: AirportInputProps) {
+    const { searchParams, setSearchParams } = useSearchContext();
+    const { handleSearchAirport, isLoading, isError, data, error } =
+        useSearchAirport();
+
     const [search, setSearch] = useState<string>('');
     const [selectedLocation, setSelectedLocation] = useState<
         AirPortSearchResultType | undefined
     >(undefined);
-    const [debouncedSearch, setDebouncedSearch] = useState<string>('');
+
     const [showResults, setShowResults] = useState<boolean>(false);
 
     // Debounce search updates
     const handleSearchChange = debounce((value: string) => {
-        setDebouncedSearch(value);
+        const res = handleSearchAirport(value);
+        console.log('🚀 ~ handleSearchChange ~ res:', res);
     }, 300);
-
-    const { data, isLoading } = useSearchAirport(debouncedSearch);
 
     useEffect(() => {
         setShowResults(false);
         setSearch(selectedLocation?.presentation.suggestionTitle);
+        direction === 'to'
+            ? setSearchParams({ ...searchParams, to: selectedLocation })
+            : setSearchParams({ ...searchParams, from: selectedLocation });
     }, [selectedLocation]);
 
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
+
     return (
-        <Box>
+        <Box sx={{ position: 'relative', flexGrow: 1 }}>
             <StyledSimpleInput
                 startAdornment={
                     <InputAdornment position="start">
@@ -57,7 +76,7 @@ function AirPortInput({ direction }: AirportInputProps) {
                         )}
                     </InputAdornment>
                 }
-                placeholder="Where from?"
+                placeholder={direction === 'from' ? 'Where from?' : 'Where to?'}
                 onChange={(e) => {
                     setSearch(e.target.value);
                     handleSearchChange(e.target.value);
@@ -65,9 +84,9 @@ function AirPortInput({ direction }: AirportInputProps) {
                 }}
                 value={search}
             />
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <InputLoader />}
             {showResults && data?.data && data?.data?.length > 0 && (
-                <Stack spacing={1}>
+                <AirportResultsWrapper spacing={1}>
                     {data.data.map(
                         (airportSearchResult: AirPortSearchResultType) => (
                             <AirportResult
@@ -77,7 +96,7 @@ function AirPortInput({ direction }: AirportInputProps) {
                             />
                         ),
                     )}
-                </Stack>
+                </AirportResultsWrapper>
             )}
         </Box>
     );

@@ -5,3 +5,7 @@ export interface AirPortSearchResultType {
     presentation: Record<string, any>; // Same for presentation
     [key: string]: any; // Allows for additional unknown fields
 }
+
+export interface AirportInputProps {
+    direction: string;
+}

@@ -26,9 +26,9 @@ export const myPalette = {
     },
 
     blue: {
-        main: '#004B8E',
-        dark: '#b9e5f5',
-        light: '#FAFBFE',
+        main: 'rgb(26, 115, 232)',
+        dark: 'rgb(24, 90, 188)',
+        light: '#e8f0fe',
         extra_dark: '#878D96',
     },
 
@@ -47,7 +47,7 @@ export const myPalette = {
         light: '#f7f468',
     },
 
-    button: {
+    gray: {
         // main: '#365DEC',
 
         main: '#002DCF',
@@ -67,11 +67,9 @@ export const myPalette = {
         light: '#FFFFFF26',
     },
     border: {
-        main: '#767676',
+        main: '#D9D9D9',
         primary: '#767676',
         secondary: '#767676',
-        light: '#CADAE8',
-        dark: '#B0C7DC',
     },
 
     background: {

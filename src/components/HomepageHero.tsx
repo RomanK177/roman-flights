@@ -20,6 +20,7 @@ function HomepageHero() {
             <Typography
                 variant="h1"
                 component="h1"
+                align="center"
                 sx={{ position: 'absolute', width: '100%', bottom: 0 }}
             >
                 Roman Flights

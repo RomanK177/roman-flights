@@ -1,21 +1,24 @@
-import React from 'react';
-
-import { useGetFlights } from '../services/FlightsService';
 import HomepageHero from '../components/HomepageHero';
 
 // Mui
-import theme from '../styles/CustomTheme';
-import { Box, Typography, Stack, Button, Container } from '@mui/material/';
+import { Stack, Container } from '@mui/material/';
 import SearchBar from '../components/SearchBar';
 
-function Homepage() {
-    const { data, isLoading } = useGetFlights();
+// Context
+import { SearchContextProvider } from '../contexts/SearchContext';
+import SearchResults from '../components/SearchResults';
 
+function Homepage() {
     return (
         <div>
             <Container>
                 <HomepageHero />
-                <SearchBar />
+                <SearchContextProvider>
+                    <Stack alignItems="center">
+                        <SearchBar />
+                        <SearchResults />
+                    </Stack>
+                </SearchContextProvider>
             </Container>
         </div>
     );
