@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useMutation } from 'react-query';
 
 // Types
-import { AirPortSearchResultType } from '../types/search.flight.types';
 import { SearchParams } from '../types/search.context';
 
 // API Configuration

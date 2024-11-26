@@ -1,14 +1,12 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import './App.scss';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import {
-    useQuery,
-    useMutation,
-    useQueryClient,
-    QueryClient,
-    QueryClientProvider,
-} from 'react-query';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+// Toastify
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Mui
 import { ThemeProvider } from '@mui/material/styles';
@@ -27,9 +25,7 @@ function App() {
             path: '/',
             element: (
                 <Suspense fallback={<LinearProgress />}>
-                    {/* <StudentLayout> */}
                     <Homepage />
-                    {/* </StudentLayout> */}
                 </Suspense>
             ),
 
@@ -47,6 +43,7 @@ function App() {
                 <ThemeProvider theme={theme}>
                     <RouterProvider router={router} />
                 </ThemeProvider>
+                <ToastContainer />
             </div>
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>

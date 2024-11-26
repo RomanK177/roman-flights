@@ -1,10 +1,11 @@
-import { useState, createContext, useMemo, useContext, useEffect } from 'react';
+import { useState, createContext, useMemo, useContext } from 'react';
 
 // Types
 import {
     SearchParams,
     SearchContextType,
     SearchContextProviderProps,
+    FlightSearchResultType,
 } from '../types/search.context';
 
 // Create Context
@@ -20,15 +21,9 @@ export const SearchContextProvider = ({
         dates: { start: null, end: null },
         filters: { adults: 1, class: 'economy' },
     });
-    const [flightResults, setFlightResults] = useState<any>(undefined);
-
-    useEffect(() => {
-        console.log(searchParams);
-    }, [searchParams]);
-
-    useEffect(() => {
-        console.log('res', flightResults);
-    }, [flightResults]);
+    const [flightResults, setFlightResults] = useState<
+        FlightSearchResultType | undefined
+    >(undefined);
 
     // Memoize the context value to prevent unnecessary renders
     const SearchContextData = useMemo(

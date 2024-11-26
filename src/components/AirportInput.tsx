@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StyledSimpleInput } from '../styles/Inputs';
 import { useSearchAirport } from '../services/FlightsService';
 
@@ -45,6 +45,7 @@ function AirPortInput({ direction }: AirportInputProps) {
     >(undefined);
 
     const [showResults, setShowResults] = useState<boolean>(false);
+    const wrapperRef = useRef<HTMLDivElement>(null);
 
     // Debounce search updates
     const handleSearchChange = debounce((value: string) => {
@@ -61,11 +62,25 @@ function AirPortInput({ direction }: AirportInputProps) {
     }, [selectedLocation]);
 
     useEffect(() => {
-        console.log(data);
-    }, [data]);
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                wrapperRef.current &&
+                !wrapperRef.current.contains(event.target as Node)
+            ) {
+                setShowResults(false);
+                // Return to selected value
+                setSearch(selectedLocation?.presentation.suggestionTitle);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
-        <Box sx={{ position: 'relative', flexGrow: 1 }}>
+        <Box ref={wrapperRef} sx={{ position: 'relative', flexGrow: 1 }}>
             <StyledSimpleInput
                 startAdornment={
                     <InputAdornment position="start">

@@ -1,15 +1,12 @@
-import React from 'react';
 import moment from 'moment';
 
 // Mui
-import theme from '../styles/CustomTheme';
-import { Box, Typography, Stack, Button, Container } from '@mui/material/';
+import { Box, Typography, Stack } from '@mui/material/';
 
 // Styled
 import { SearchResultWrapper } from '../styles/SearchBarStyledComponents';
 
 function SearchResult({ trip }: any) {
-    console.log('🚀 ~ SearchResult ~ trip:', trip);
     return (
         <SearchResultWrapper
             direction="row"

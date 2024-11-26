@@ -10,7 +10,6 @@ import SearchResult from './SearchResult';
 
 function SearchResults() {
     const { flightResults } = useSearchContext();
-    console.log('🚀 ~ SearchResults ~ flightResults:', flightResults);
 
     return (
         <Box mt={3} sx={{ width: '100%' }}>

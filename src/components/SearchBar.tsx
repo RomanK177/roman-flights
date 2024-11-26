@@ -1,6 +1,9 @@
 import { useEffect } from 'react';
 import { useSearchFlights } from '../services/FlightsService';
 
+// Toastify
+import { toast } from 'react-toastify';
+
 // Mui
 import { Stack } from '@mui/material/';
 import AirPortInput from './AirportInput';
@@ -23,11 +26,26 @@ function SearchBar() {
     const { handleSearchFlights, isLoading, data } = useSearchFlights();
 
     const handleSearch = () => {
+        const validations = [
+            { condition: !searchParams.from, message: 'Select Where From!' },
+            { condition: !searchParams.to, message: 'Select Where To!' },
+            {
+                condition: !searchParams.dates.start || !searchParams.dates.end,
+                message: 'Select Dates!',
+            },
+        ];
+
+        for (const validation of validations) {
+            if (validation.condition) {
+                toast(validation.message);
+                return;
+            }
+        }
+
         handleSearchFlights(searchParams);
     };
 
     useEffect(() => {
-        console.log('🚀 ~ useEffect ~ data:', data);
         setFlightResults({ ...data }); // Store the results in the context
     }, [data]);
 
@@ -46,7 +64,7 @@ function SearchBar() {
                         position: 'absolute',
                         bottom: 0,
                         left: '50%',
-                        transform: 'translate(-50%,50%)',
+                        translate: '-50% 150%',
                     }}
                 />
             ) : (

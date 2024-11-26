@@ -1,5 +1,4 @@
 import { ButtonPropsVariantOverrides } from '@mui/material/Button';
-import { TypographyPropsVariantOverrides } from '@mui/material/Typography';
 
 declare module '@mui/material/Button' {
     interface ButtonPropsVariantOverrides {
@@ -11,18 +10,6 @@ declare module '@mui/material/Button' {
         containedLightBlue: true;
         containedBlue: true;
         myDisabled: true;
-    }
-}
-
-declare module '@mui/material/Typography' {
-    interface TypographyPropsVariantOverrides {
-        'headers/header1': true;
-        'headers/h2header 2': true;
-        'headers/h3header 3': true;
-        'headers/h4header 4': true;
-        'headers/h5header 5': true;
-        'headers/h6header 6': true;
-        'body/body1': true;
     }
 }
 

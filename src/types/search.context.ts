@@ -17,3 +17,7 @@ export interface SearchParams {
 export interface SearchContextProviderProps {
     children: ReactNode;
 }
+
+export interface FlightSearchResultType {
+    data: any;
+}

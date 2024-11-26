@@ -11,6 +11,8 @@ export const AirportResultsWrapper = styled(Stack)(
         width: '100%',
         border: '1px solid #D9D9D9',
         borderRadius: '7.5px',
+        maxHeight: '350px',
+        overflow: 'auto',
     }),
 );
 export const SearchBarWrapper = styled(Stack)(({ theme: { palette } }) => ({
